@@ -86,7 +86,8 @@ npx @neabyte/chart-to-image -s BTC/USDT -o line-break.png --chart-type line-brea
 # Technical indicators
 npx @neabyte/chart-to-image -s BTC/USDT -o vwap-chart.png --vwap
 npx @neabyte/chart-to-image -s ETH/USDT -o ema-chart.png --ema
-npx @neabyte/chart-to-image -s BTC/USDT -o indicators.png --vwap --ema
+npx @neabyte/chart-to-image -s BTC/USDT -o sma-chart.png --sma
+npx @neabyte/chart-to-image -s BTC/USDT -o indicators.png --vwap --ema --sma
 
 # Chart comparison (side-by-side)
 npx @neabyte/chart-to-image --compare "BTC/USDT,ETH/USDT" --output comparison.png
@@ -177,7 +178,9 @@ const indicatorResult = await generateChartImage({
   outputPath: 'indicators.png',
   showVWAP: true,
   showEMA: true,
-  emaPeriod: 20
+  emaPeriod: 20,
+  showSMA: true,
+  smaPeriod: 20
 })
 
 // Comparison with indicators
@@ -187,7 +190,9 @@ const comparisonWithIndicators = await ComparisonService.sideBySide(
   {
     showVWAP: true,
     showEMA: true,
-    emaPeriod: 20
+    emaPeriod: 20,
+    showSMA: true,
+    smaPeriod: 20
   }
 )
 ```
@@ -207,7 +212,8 @@ const comparisonWithIndicators = await ComparisonService.sideBySide(
 
 - **VWAP**: Volume Weighted Average Price (institutional standard)
 - **EMA**: Exponential Moving Average (configurable periods)
-- **Combined Analysis**: Use both indicators together for comprehensive analysis
+- **SMA**: Simple Moving Average (configurable periods)
+- **Combined Analysis**: Use all indicators together for comprehensive analysis
 
 ### 🎨 Custom Colors
 
@@ -286,6 +292,11 @@ const comparisonWithIndicators = await ComparisonService.sideBySide(
 --layout <type>             Layout type (side-by-side, grid)
 --columns <number>          Number of columns for grid layout (max 2)
 --timeframes <timeframes>   Compare timeframes (format: 1h,4h,1d)
+
+# Technical Indicators
+--vwap                      Show VWAP indicator
+--ema                       Show EMA indicator (default: 20 period)
+--sma                       Show SMA indicator (default: 20 period)
 
 # Hide Elements
 --hide-title                Hide chart title

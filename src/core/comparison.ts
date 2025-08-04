@@ -48,6 +48,10 @@ export interface ComparisonConfig {
   showEMA?: boolean
   /** EMA period for calculation */
   emaPeriod?: number
+  /** Whether to display SMA indicator */
+  showSMA?: boolean
+  /** SMA period for calculation */
+  smaPeriod?: number
   /** Output file path for saving the comparison */
   outputPath?: string
   /** Custom colors for chart bars and elements */
@@ -319,7 +323,9 @@ export class ComparisonService {
         showGrid: true,
         showVWAP: this.config.showVWAP === true,
         showEMA: this.config.showEMA === true,
-        ...(this.config.emaPeriod !== undefined && { emaPeriod: this.config.emaPeriod })
+        ...(this.config.emaPeriod !== undefined && { emaPeriod: this.config.emaPeriod }),
+        showSMA: this.config.showSMA === true,
+        ...(this.config.smaPeriod !== undefined && { smaPeriod: this.config.smaPeriod })
       }
     }
   }

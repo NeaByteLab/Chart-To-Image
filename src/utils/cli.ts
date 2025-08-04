@@ -36,6 +36,8 @@ export interface CLIArgs {
   showVWAP?: boolean
   showEMA?: boolean
   emaPeriod?: number
+  showSMA?: boolean
+  smaPeriod?: number
   autoScale?: boolean
   scaleX?: number
   scaleY?: number
@@ -257,7 +259,11 @@ export function parseArgs(): CLIArgs {
         break
       case '--ema':
         parsed.showEMA = true
-        parsed.emaPeriod = 20 // Default period
+        parsed.emaPeriod = 20
+        break
+      case '--sma':
+        parsed.showSMA = true
+        parsed.smaPeriod = 20
         break
       case '--background-color':
       case '--bg-color':
@@ -414,6 +420,7 @@ Optional Options:
   --hide-grid                     Hide grid
   --vwap                          Show VWAP indicator
   --ema                           Show EMA indicator (default: 20 period)
+  --sma                           Show SMA indicator (default: 20 period)
   --background-color <color>      Background color
   --text-color <color>            Text color
   --fetch                         Fetch fresh data
@@ -592,6 +599,8 @@ function addHideOptions(config: Record<string, unknown>, args: CLIArgs): void {
   if (args.showVWAP) config.showVWAP = true
   if (args.showEMA) config.showEMA = true
   if (args.emaPeriod) config.emaPeriod = args.emaPeriod
+  if (args.showSMA) config.showSMA = true
+  if (args.smaPeriod) config.smaPeriod = args.smaPeriod
 }
 
 /**

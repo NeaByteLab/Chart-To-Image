@@ -48,7 +48,8 @@ Complete guide to using Chart-To-Image CLI and API with all features and example
 |-----------|-------------|----------|----------|
 | `VWAP` | Volume Weighted Average Price | Institutional analysis | `--vwap` |
 | `EMA` | Exponential Moving Average | Trend analysis | `--ema` |
-| `Combined` | VWAP + EMA together | Comprehensive analysis | `--vwap --ema` |
+| `SMA` | Simple Moving Average | Trend analysis | `--sma` |
+| `Combined` | VWAP + EMA + SMA together | Comprehensive analysis | `--vwap --ema --sma` |
 
 **VWAP Features:**
 - Institutional standard calculation
@@ -62,17 +63,26 @@ Complete guide to using Chart-To-Image CLI and API with all features and example
 - Solid line visualization
 - Customizable periods
 
+**SMA Features:**
+- Configurable periods (default: 20)
+- Simple arithmetic average
+- Teal line visualization
+- Standard moving average calculation
+
 **Combined Usage:**
 ```bash
 # Single indicator
 npx @neabyte/chart-to-image -s BTC/USDT --vwap
 npx @neabyte/chart-to-image -s ETH/USDT --ema
+npx @neabyte/chart-to-image -s BTC/USDT --sma
 
-# Both indicators together
+# Multiple indicators together
 npx @neabyte/chart-to-image -s BTC/USDT --vwap --ema
+npx @neabyte/chart-to-image -s BTC/USDT --vwap --ema --sma
 
 # In comparison charts
 npx @neabyte/chart-to-image --compare "BTC/USDT,ETH/USDT" --vwap --ema
+npx @neabyte/chart-to-image --compare "BTC/USDT,ETH/USDT" --vwap --ema --sma
 ```
 
 ### 🔄 Chart Comparison
@@ -564,19 +574,19 @@ npx @neabyte/chart-to-image --compare "BTC/USDT,ETH/USDT,ADA/USDT" \
   --timeframes "1h,4h,1d" --chart-type heikin-ashi \
   --custom-colors "bullish=#00d4aa,bearish=#ff6b6b" \
   --background-color "#1a1a2e" --text-color "#00d4ff" \
-  --vwap --ema --output professional-analysis.png
+  --vwap --ema --sma --output professional-analysis.png
 
-# Multi-timeframe trend analysis with VWAP
+# Multi-timeframe trend analysis with indicators
 npx @neabyte/chart-to-image --compare "BTC/USDT,BTC/USDT,BTC/USDT,BTC/USDT" \
   --timeframes "5m,15m,1h,4h" --chart-type candlestick \
   --custom-colors "bullish=#26a69a,bearish=#ef5350" \
-  --vwap --ema --output trend-analysis.png
+  --vwap --ema --sma --output trend-analysis.png
 
 # Grid comparison for correlation analysis
 npx @neabyte/chart-to-image --compare "BTC/USDT,ETH/USDT" --layout grid \
   --chart-type line --custom-colors "bullish=#4CAF50,bearish=#F44336" \
   --background-color "#ffffff" --text-color "#000000" \
-  --vwap --ema --output correlation-analysis.png
+  --vwap --ema --sma --output correlation-analysis.png
 ```
 
 ## ⚡ Performance Tips

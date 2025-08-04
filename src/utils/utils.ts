@@ -21,7 +21,6 @@ export function formatTimestamp(timestamp: number): string {
   const date = new Date(timestamp)
   const now = new Date()
   const isToday = date.toDateString() === now.toDateString()
-
   if (isToday) {
     return date.toLocaleTimeString('en-US', {
       hour: '2-digit',
@@ -66,13 +65,11 @@ export function calculatePercentageChange(current: number, previous: number): nu
  */
 export function calculateMovingAverage(data: number[], period: number): number[] {
   if (data.length < period) return []
-
   const result = []
   for (let i = period - 1; i < data.length; i++) {
     const sum = data.slice(i - period + 1, i + 1).reduce((a, b) => a + b, 0)
     result.push(sum / period)
   }
-
   return result
 }
 
@@ -88,13 +85,11 @@ export function calculateMovingAverage(data: number[], period: number): number[]
  */
 export function calculateRSI(data: number[], period: number = 14): number[] {
   if (data.length < period + 1) return []
-
   const rsiValues = []
   for (let i = period; i < data.length; i++) {
     const rsi = calculateRSIForPeriod(data, i, period)
     rsiValues.push(rsi)
   }
-
   return rsiValues
 }
 
@@ -112,7 +107,6 @@ export function calculateRSI(data: number[], period: number = 14): number[] {
 function calculateRSIForPeriod(data: number[], index: number, period: number): number {
   let gains = 0
   let losses = 0
-
   for (let i = index - period + 1; i <= index; i++) {
     const change = data[i] - data[i - 1]
     if (change > 0) {
@@ -121,12 +115,9 @@ function calculateRSIForPeriod(data: number[], index: number, period: number): n
       losses -= change
     }
   }
-
   const avgGain = gains / period
   const avgLoss = losses / period
-
   if (avgLoss === 0) return 100
-
   const rs = avgGain / avgLoss
   return 100 - 100 / (1 + rs)
 }
@@ -142,7 +133,6 @@ function calculateRSIForPeriod(data: number[], index: number, period: number): n
  */
 export function validateChartData(data: ChartData[]): boolean {
   if (!Array.isArray(data) || data.length === 0) return false
-
   return data.every(item => {
     return (
       typeof item.timestamp === 'number' &&
@@ -184,7 +174,6 @@ export function sortChartData(data: ChartData[]): ChartData[] {
 export function filterChartDataByDate(data: ChartData[], startDate: Date, endDate: Date): ChartData[] {
   const startTimestamp = startDate.getTime()
   const endTimestamp = endDate.getTime()
-
   return data.filter(item => {
     return item.timestamp >= startTimestamp && item.timestamp <= endTimestamp
   })
@@ -202,7 +191,6 @@ export function filterChartDataByDate(data: ChartData[], startDate: Date, endDat
 export function timeframeToMs(timeframe: string): number {
   const value = parseInt(timeframe.slice(0, -1))
   const unit = timeframe.slice(-1)
-
   switch (unit) {
     case 'm':
       return value * 60 * 1000
@@ -258,16 +246,13 @@ export function formatPrice(price: number, decimals: number = 2): string {
  */
 export function calculateVWAP(data: ChartData[]): number {
   if (data.length === 0) return 0
-
   let totalVolume = 0
   let totalVolumePrice = 0
-
   data.forEach(item => {
     const volume = item.volume || 0
     const typicalPrice = (item.high + item.low + item.close) / 3
     totalVolume += volume
     totalVolumePrice += volume * typicalPrice
   })
-
   return totalVolume > 0 ? totalVolumePrice / totalVolume : 0
 }

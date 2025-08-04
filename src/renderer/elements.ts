@@ -358,14 +358,17 @@ export class VWAPRenderer {
     this.ctx.lineWidth = 2
     this.ctx.setLineDash([5, 5])
     this.ctx.beginPath()
-    vwapData.forEach((point, index) => {
-      const x = this.dimensions.margin.left + index * spacing + spacing / 2
-      const y = this.dimensions.margin.top + 
-        ((this.priceRange.maxPrice - point.value) / this.priceRange.priceRange) * this.dimensions.chartHeight
-      if (index === 0) {
-        this.ctx.moveTo(x, y)
-      } else {
-        this.ctx.lineTo(x, y)
+    vwapData.forEach((point) => {
+      const originalIndex = ohlc.findIndex(candle => candle.time === point.time)
+      if (originalIndex !== -1) {
+        const x = this.dimensions.margin.left + originalIndex * spacing + spacing / 2
+        const y = this.dimensions.margin.top + 
+          ((this.priceRange.maxPrice - point.value) / this.priceRange.priceRange) * this.dimensions.chartHeight
+        if (originalIndex === 0) {
+          this.ctx.moveTo(x, y)
+        } else {
+          this.ctx.lineTo(x, y)
+        }
       }
     })
     this.ctx.stroke()
@@ -437,26 +440,20 @@ export class EMARenderer {
    */
   private calculateEMA(ohlc: ChartOHLC[]): EMAData[] {
     if (ohlc.length === 0) return []
-
     const emaData: EMAData[] = []
     const multiplier = 2 / (this.period + 1)
-    let ema = ohlc[0].close // Start with first close price
-
+    let ema = ohlc[0].close
     ohlc.forEach((candle, index) => {
       if (index === 0) {
-        // First value is the close price
         ema = candle.close
       } else {
-        // EMA = (Close - Previous EMA) × Multiplier + Previous EMA
         ema = (candle.close - ema) * multiplier + ema
       }
-
       emaData.push({
         time: candle.time,
         value: ema
       })
     })
-
     return emaData
   }
 
@@ -472,34 +469,138 @@ export class EMARenderer {
   render(ohlc: ChartOHLC[]): void {
     const emaData = this.calculateEMA(ohlc)
     if (emaData.length === 0) return
-
     const spacing = this.dimensions.chartWidth / ohlc.length
-
-    // Draw EMA line
     this.ctx.strokeStyle = this.config.customBarColors?.bearish || '#ff6b6b'
     this.ctx.lineWidth = 2
-    this.ctx.setLineDash([]) // Solid line for EMA
+    this.ctx.setLineDash([])
     this.ctx.beginPath()
-
-    emaData.forEach((point, index) => {
-      const x = this.dimensions.margin.left + index * spacing + spacing / 2
-      const y = this.dimensions.margin.top + 
-        ((this.priceRange.maxPrice - point.value) / this.priceRange.priceRange) * this.dimensions.chartHeight
-
-      if (index === 0) {
-        this.ctx.moveTo(x, y)
-      } else {
-        this.ctx.lineTo(x, y)
+    emaData.forEach((point) => {
+      const originalIndex = ohlc.findIndex(candle => candle.time === point.time)
+      if (originalIndex !== -1) {
+        const x = this.dimensions.margin.left + originalIndex * spacing + spacing / 2
+        const y = this.dimensions.margin.top + 
+          ((this.priceRange.maxPrice - point.value) / this.priceRange.priceRange) * this.dimensions.chartHeight
+        if (originalIndex === 0) {
+          this.ctx.moveTo(x, y)
+        } else {
+          this.ctx.lineTo(x, y)
+        }
       }
     })
-
     this.ctx.stroke()
-
-    // Draw EMA label
     this.ctx.fillStyle = this.config.customBarColors?.bearish || '#ff6b6b'
     this.ctx.font = DEFAULT_FONT
     this.ctx.textAlign = 'left'
     this.ctx.fillText(`EMA(${this.period})`, this.dimensions.margin.left + 5, this.dimensions.margin.top + 20)
+  }
+}
+
+interface SMAData {
+  time: number
+  value: number
+}
+
+/**
+ * Simple Moving Average (SMA) renderer
+ *
+ * Renders SMA lines on charts with configurable periods. SMA provides
+ * a simple average of closing prices over a specified period, useful
+ * for trend identification and support/resistance levels.
+ */
+export class SMARenderer {
+  private ctx: CanvasRenderingContext2D
+  private dimensions: ChartDimensions
+  private priceRange: PriceRange
+  private config: ChartOptions
+  private period: number
+
+  /**
+   * Creates a new SMA renderer instance
+   *
+   * Initializes the renderer with canvas context, chart dimensions,
+   * price range for scaling, configuration options, and SMA period
+   * for calculation.
+   *
+   * @param ctx - Canvas rendering context for drawing operations
+   * @param dimensions - Chart dimensions and margin configuration
+   * @param priceRange - Price range for coordinate scaling
+   * @param config - Chart styling and configuration options
+   * @param period - SMA calculation period (default: 20)
+   */
+  constructor(
+    ctx: CanvasRenderingContext2D,
+    dimensions: ChartDimensions,
+    priceRange: PriceRange,
+    config: ChartOptions,
+    period: number
+  ) {
+    this.ctx = ctx
+    this.dimensions = dimensions
+    this.priceRange = priceRange
+    this.config = config
+    this.period = period
+  }
+
+  /**
+   * Calculates SMA values for the given OHLC data
+   *
+   * Computes simple moving average using closing prices over the
+   * specified period. Returns array of time-value pairs for rendering.
+   *
+   * @param ohlc - Array of OHLC candle data
+   * @returns Array of SMA data points with time and value
+   */
+  private calculateSMA(ohlc: ChartOHLC[]): SMAData[] {
+    if (ohlc.length < this.period) return []
+    const smaData: SMAData[] = []
+    for (let i = this.period - 1; i < ohlc.length; i++) {
+      let sum = 0
+      for (let j = i - this.period + 1; j <= i; j++) {
+        sum += ohlc[j].close
+      }
+      const sma = sum / this.period
+      smaData.push({
+        time: ohlc[i].time,
+        value: sma
+      })
+    }
+    return smaData
+  }
+
+  /**
+   * Renders SMA line on the chart
+   *
+   * Draws SMA line with appropriate styling and positioning. Includes
+   * SMA label for identification and uses consistent color scheme.
+   *
+   * @param ohlc - Array of OHLC candle data for SMA calculation
+   */
+  render(ohlc: ChartOHLC[]): void {
+    const smaData = this.calculateSMA(ohlc)
+    if (smaData.length === 0) return
+    const spacing = this.dimensions.chartWidth / ohlc.length
+    this.ctx.strokeStyle = this.config.customBarColors?.bullish || '#4ecdc4'
+    this.ctx.lineWidth = 2
+    this.ctx.setLineDash([])
+    this.ctx.beginPath()
+    smaData.forEach((point) => {
+      const originalIndex = ohlc.findIndex(candle => candle.time === point.time)
+      if (originalIndex !== -1) {
+        const x = this.dimensions.margin.left + originalIndex * spacing + spacing / 2
+        const y = this.dimensions.margin.top + 
+          ((this.priceRange.maxPrice - point.value) / this.priceRange.priceRange) * this.dimensions.chartHeight
+        if (originalIndex === 0) {
+          this.ctx.moveTo(x, y)
+        } else {
+          this.ctx.lineTo(x, y)
+        }
+      }
+    })
+    this.ctx.stroke()
+    this.ctx.fillStyle = this.config.customBarColors?.bullish || '#4ecdc4'
+    this.ctx.font = DEFAULT_FONT
+    this.ctx.textAlign = 'left'
+    this.ctx.fillText(`SMA(${this.period})`, this.dimensions.margin.left + 5, this.dimensions.margin.top + 40)
   }
 }
 

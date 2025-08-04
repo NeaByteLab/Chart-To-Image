@@ -138,6 +138,10 @@ async function main(): Promise<void> {
       configData.showEMA = true
       configData.emaPeriod = args.emaPeriod || 20
     }
+    if (args.showSMA) {
+      configData.showSMA = true
+      configData.smaPeriod = args.smaPeriod || 20
+    }
     const config = new ChartConfig(configData)
     const renderer = new ChartRenderer(config)
     const result = await renderer.generateChart()
@@ -185,7 +189,9 @@ async function handleComparison(args: any): Promise<void> {
     chartType: args.chartType,
     showVWAP: args.showVWAP,
     showEMA: args.showEMA,
-    emaPeriod: args.emaPeriod
+    emaPeriod: args.emaPeriod,
+    showSMA: args.showSMA,
+    smaPeriod: args.smaPeriod
   }
   if (args.customColors) {
     const colorParts = args.customColors.split(',')

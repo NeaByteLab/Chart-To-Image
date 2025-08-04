@@ -15,6 +15,7 @@ import {
   GridRenderer,
   VWAPRenderer,
   EMARenderer,
+  SMARenderer,
   LevelsRenderer,
   TitleRenderer,
   WatermarkRenderer
@@ -116,6 +117,10 @@ export class NodeChartRenderer {
     if (config.showEMA && config.emaPeriod) {
       const emaRenderer = new EMARenderer(this.ctx, dimensions, priceRange, config, config.emaPeriod)
       emaRenderer.render(ohlc)
+    }
+    if (config.showSMA && config.smaPeriod) {
+      const smaRenderer = new SMARenderer(this.ctx, dimensions, priceRange, config, config.smaPeriod)
+      smaRenderer.render(ohlc)
     }
     if (this.chartData.levels) {
       const levelsRenderer = new LevelsRenderer(this.ctx, dimensions, priceRange)

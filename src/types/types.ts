@@ -70,6 +70,10 @@ export interface ChartConfig {
   showEMA?: boolean
   /** EMA period for calculation */
   emaPeriod?: number
+  /** Whether to display SMA indicator */
+  showSMA?: boolean
+  /** SMA period for calculation */
+  smaPeriod?: number
   /** Background color of the chart */
   backgroundColor?: string
   /** Text color for chart labels */
@@ -174,6 +178,10 @@ export interface ChartOptions {
   showEMA?: boolean
   /** EMA period for calculation */
   emaPeriod?: number
+  /** Whether to display SMA indicator */
+  showSMA?: boolean
+  /** SMA period for calculation */
+  smaPeriod?: number
   /** Chart scaling configuration */
   scale?: {
     /** X-axis scale factor */

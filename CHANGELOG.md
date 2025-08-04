@@ -5,6 +5,48 @@ All notable changes to the Chart-To-Image library will be documented in this fil
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.3] - 2025-08-04
+
+### 🚀 Added
+- **SMA Indicator**: Simple Moving Average with configurable periods
+- **Complete Indicator Suite**: VWAP, EMA, and SMA working together on all chart types
+- **Comparison Support**: All indicators available in comparison charts
+- **CLI Integration**: `--sma` flag for SMA indicator activation
+- **API Support**: Programmatic access to SMA indicator
+- **Professional Quality**: Complete institutional-grade technical analysis toolkit
+
+### 🎯 Features
+- **SMA Calculation**: Simple arithmetic moving average with period customization
+- **Multi-Chart Support**: SMA works on candlestick, line, area, heikin-ashi, renko, line-break
+- **Comparison Charts**: SMA displays in side-by-side and grid layouts
+- **Timeframe Analysis**: SMA across different timeframes
+- **Custom Periods**: Configurable SMA periods (default: 20)
+- **Visual Styling**: Teal SMA line with "SMA(period)" labels
+- **Complete Suite**: Use VWAP, EMA, and SMA together for comprehensive analysis
+
+### 🔧 Technical
+- **SMARenderer**: Dedicated renderer for Simple Moving Average
+- **Type Safety**: Full TypeScript support for SMA configurations
+- **Performance**: Optimized SMA calculations and rendering
+- **Error Handling**: Robust validation for SMA parameters
+- **Integration**: Seamless integration with existing VWAP and EMA indicators
+- **Position Fix**: Fixed indicator alignment with candle positions
+
+### 📚 Documentation
+- **README**: Updated with SMA feature descriptions
+- **USAGE.md**: Comprehensive SMA usage guide
+- **CLI Examples**: Command-line usage for SMA indicator
+- **API Examples**: Programmatic SMA integration
+
+### 🎨 Visual Enhancements
+- **SMA Labels**: Clear "SMA(period)" labels
+- **Line Styling**: Teal SMA lines with consistent colors
+- **Complete Display**: VWAP, EMA, and SMA working together harmoniously
+- **Professional Quality**: Complete institutional-grade indicator visualization
+- **Perfect Alignment**: Fixed indicator positioning to match candle positions
+
+---
+
 ## [1.1.2] - 2025-08-04
 
 ### 🚀 Added
