@@ -37,6 +37,8 @@ export class ChartConfig implements IChartConfig {
   public showTimeAxis?: boolean
   public showGrid?: boolean
   public showVWAP?: boolean
+  public showEMA?: boolean
+  public emaPeriod?: number
   public backgroundColor?: string
   public textColor?: string
 
@@ -74,6 +76,12 @@ export class ChartConfig implements IChartConfig {
     }
     if (config.showVWAP !== undefined) {
       this.showVWAP = config.showVWAP
+    }
+    if (config.showEMA !== undefined) {
+      this.showEMA = config.showEMA
+    }
+    if (config.emaPeriod !== undefined) {
+      this.emaPeriod = config.emaPeriod
     }
     if (config.backgroundColor !== undefined) {
       this.backgroundColor = config.backgroundColor

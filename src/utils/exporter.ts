@@ -472,4 +472,4 @@ export class ImageExporter {
   private getFileExtension(path: string): string {
     return path.split('.').pop()?.toLowerCase() || 'png'
   }
-}
+} 

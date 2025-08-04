@@ -6,6 +6,7 @@ Complete guide to using Chart-To-Image CLI and API with all features and example
 
 - [CLI Usage](#cli-usage)
 - [Chart Types](#chart-types)
+- [Technical Indicators](#technical-indicators)
 - [Chart Comparison](#chart-comparison)
 - [Timeframe Comparison](#timeframe-comparison)
 - [Color Options](#color-options)
@@ -39,6 +40,40 @@ Complete guide to using Chart-To-Image CLI and API with all features and example
 | `area` | Filled area chart | Volume/price relationship |
 | `heikin-ashi` | Trend-smoothed candles | Trend identification |
 | `renko` | Price-based blocks | Noise filtering |
+| `line-break` | Break high/low patterns | Trend continuation analysis |
+
+### 📈 Technical Indicators
+
+| Indicator | Description | Use Case | CLI Flag |
+|-----------|-------------|----------|----------|
+| `VWAP` | Volume Weighted Average Price | Institutional analysis | `--vwap` |
+| `EMA` | Exponential Moving Average | Trend analysis | `--ema` |
+| `Combined` | VWAP + EMA together | Comprehensive analysis | `--vwap --ema` |
+
+**VWAP Features:**
+- Institutional standard calculation
+- Volume-weighted price analysis
+- Dashed line visualization
+- Works on all chart types
+
+**EMA Features:**
+- Configurable periods (default: 20)
+- Exponential smoothing
+- Solid line visualization
+- Customizable periods
+
+**Combined Usage:**
+```bash
+# Single indicator
+npx @neabyte/chart-to-image -s BTC/USDT --vwap
+npx @neabyte/chart-to-image -s ETH/USDT --ema
+
+# Both indicators together
+npx @neabyte/chart-to-image -s BTC/USDT --vwap --ema
+
+# In comparison charts
+npx @neabyte/chart-to-image --compare "BTC/USDT,ETH/USDT" --vwap --ema
+```
 
 ### 🔄 Chart Comparison
 
@@ -185,6 +220,10 @@ npx @neabyte/chart-to-image --compare "BTC/USDT,ETH/USDT" --output comparison.pn
 npx @neabyte/chart-to-image --compare "BTC/USDT,ETH/USDT" --layout grid \
   --custom-colors "bullish=#00ff88,bearish=#ff4444" --output grid-comparison.png
 
+# Comparison with technical indicators
+npx @neabyte/chart-to-image --compare "BTC/USDT,ETH/USDT" --vwap --ema \
+  --output comparison-indicators.png
+
 # Multiple symbols comparison
 npx @neabyte/chart-to-image --compare "BTC/USDT,ETH/USDT,ADA/USDT" --output multi-comparison.png
 ```
@@ -196,9 +235,9 @@ npx @neabyte/chart-to-image --compare "BTC/USDT,ETH/USDT,ADA/USDT" --output mult
 npx @neabyte/chart-to-image --compare "BTC/USDT,BTC/USDT" --timeframes "1h,4h" \
   --output timeframe-comparison.png
 
-# Timeframe progression (1m to 1d)
+# Timeframe progression with indicators
 npx @neabyte/chart-to-image --compare "ETH/USDT,ETH/USDT,ETH/USDT,ETH/USDT" \
-  --timeframes "1m,5m,1h,1d" --output eth-timeframes.png
+  --timeframes "1m,5m,1h,1d" --vwap --ema --output eth-timeframes-indicators.png
 
 # Heikin-Ashi timeframe comparison
 npx @neabyte/chart-to-image --compare "BTC/USDT,BTC/USDT" --timeframes "1h,4h" \
@@ -520,24 +559,24 @@ npx @neabyte/chart-to-image --symbol BTC/USDT --timeframe 1h --fetch --limit 50
 ### 🔄 Advanced Comparison Examples
 
 ```bash
-# Professional trading analysis
+# Professional trading analysis with indicators
 npx @neabyte/chart-to-image --compare "BTC/USDT,ETH/USDT,ADA/USDT" \
   --timeframes "1h,4h,1d" --chart-type heikin-ashi \
   --custom-colors "bullish=#00d4aa,bearish=#ff6b6b" \
   --background-color "#1a1a2e" --text-color "#00d4ff" \
-  --output professional-analysis.png
+  --vwap --ema --output professional-analysis.png
 
-# Multi-timeframe trend analysis
+# Multi-timeframe trend analysis with VWAP
 npx @neabyte/chart-to-image --compare "BTC/USDT,BTC/USDT,BTC/USDT,BTC/USDT" \
   --timeframes "5m,15m,1h,4h" --chart-type candlestick \
   --custom-colors "bullish=#26a69a,bearish=#ef5350" \
-  --output trend-analysis.png
+  --vwap --ema --output trend-analysis.png
 
 # Grid comparison for correlation analysis
 npx @neabyte/chart-to-image --compare "BTC/USDT,ETH/USDT" --layout grid \
   --chart-type line --custom-colors "bullish=#4CAF50,bearish=#F44336" \
   --background-color "#ffffff" --text-color "#000000" \
-  --output correlation-analysis.png
+  --vwap --ema --output correlation-analysis.png
 ```
 
 ## ⚡ Performance Tips
@@ -559,6 +598,13 @@ npx @neabyte/chart-to-image --compare "BTC/USDT,ETH/USDT" --layout grid \
 | Area | Medium | Good visualization |
 | Heikin-Ashi | Low | Trend analysis |
 | Renko | Low | Noise filtering |
+| Line-Break | Low | Trend continuation |
+
+| Indicator | Memory Usage | Recommendation |
+|-----------|-------------|----------------|
+| VWAP | Low | Institutional analysis |
+| EMA | Very Low | Trend analysis |
+| Combined | Low | Comprehensive analysis |
 
 ### 🔄 Comparison Performance
 
@@ -634,4 +680,4 @@ ls -la test.png
 
 ---
 
-For more information, see the [README.md](README.md) or visit the [GitHub repository](https://github.com/NeaByteLab/Chart-To-Image). 
+For more information, see the [README.md](./README.md) or visit the [GitHub repository](https://github.com/NeaByteLab/Chart-To-Image). 

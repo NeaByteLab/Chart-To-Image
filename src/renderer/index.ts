@@ -14,6 +14,7 @@ import {
   AxesRenderer,
   GridRenderer,
   VWAPRenderer,
+  EMARenderer,
   LevelsRenderer,
   TitleRenderer,
   WatermarkRenderer
@@ -111,6 +112,10 @@ export class NodeChartRenderer {
     if (config.showVWAP && hasVolumeData(ohlc)) {
       const vwapRenderer = new VWAPRenderer(this.ctx, dimensions, priceRange, config)
       vwapRenderer.render(ohlc)
+    }
+    if (config.showEMA && config.emaPeriod) {
+      const emaRenderer = new EMARenderer(this.ctx, dimensions, priceRange, config, config.emaPeriod)
+      emaRenderer.render(ohlc)
     }
     if (this.chartData.levels) {
       const levelsRenderer = new LevelsRenderer(this.ctx, dimensions, priceRange)

@@ -5,6 +5,83 @@ All notable changes to the Chart-To-Image library will be documented in this fil
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.2] - 2025-08-04
+
+### 🚀 Added
+- **EMA Indicator**: Exponential Moving Average with configurable periods
+- **Combined Indicators**: VWAP and EMA working together on all chart types
+- **Comparison Support**: Both indicators available in comparison charts
+- **CLI Integration**: `--ema` flag for EMA indicator activation
+- **API Support**: Programmatic access to EMA indicator
+- **Professional Quality**: Institutional-grade technical analysis tools
+
+### 🎯 Features
+- **EMA Calculation**: Exponential moving average with period customization
+- **Multi-Chart Support**: EMA works on candlestick, line, area, heikin-ashi, renko, line-break
+- **Comparison Charts**: EMA displays in side-by-side and grid layouts
+- **Timeframe Analysis**: EMA across different timeframes
+- **Custom Periods**: Configurable EMA periods (default: 20)
+- **Visual Styling**: Solid EMA line with "EMA(period)" labels
+- **Combined with VWAP**: Use both indicators together for comprehensive analysis
+
+### 🔧 Technical
+- **EMARenderer**: Dedicated renderer for Exponential Moving Average
+- **Type Safety**: Full TypeScript support for EMA configurations
+- **Performance**: Optimized EMA calculations and rendering
+- **Error Handling**: Robust validation for EMA parameters
+- **Integration**: Seamless integration with existing VWAP indicator
+
+### 📚 Documentation
+- **README**: Updated with EMA feature descriptions
+- **USAGE.md**: Comprehensive EMA usage guide
+- **CLI Examples**: Command-line usage for EMA indicator
+- **API Examples**: Programmatic EMA integration
+
+### 🎨 Visual Enhancements
+- **EMA Labels**: Clear "EMA(period)" labels
+- **Line Styling**: Solid EMA lines with consistent colors
+- **Combined Display**: EMA and VWAP working together harmoniously
+- **Professional Quality**: Institutional-grade indicator visualization
+
+---
+
+## [1.1.1] - 2025-08-04
+
+### 🚀 Added
+- **VWAP Indicator**: Volume Weighted Average Price with institutional calculation
+- **CLI Integration**: `--vwap` flag for VWAP indicator activation
+- **API Support**: Programmatic access to VWAP indicator
+- **Professional Quality**: Institutional-grade technical analysis tools
+
+### 🎯 Features
+- **VWAP Calculation**: Standard institutional formula (typical price × volume)
+- **Multi-Chart Support**: VWAP works on candlestick, line, area, heikin-ashi, renko, line-break
+- **Comparison Charts**: VWAP displays in side-by-side and grid layouts
+- **Timeframe Analysis**: VWAP across different timeframes
+- **Visual Styling**: Dashed VWAP line with "VWAP" labels
+- **Volume Data**: Proper volume data handling for VWAP calculation
+
+### 🔧 Technical
+- **VWAPRenderer**: Dedicated renderer for Volume Weighted Average Price
+- **Volume Data**: Proper volume data handling for VWAP calculation
+- **Type Safety**: Full TypeScript support for VWAP configurations
+- **Performance**: Optimized VWAP calculations and rendering
+- **Error Handling**: Robust validation for VWAP parameters
+
+### 📚 Documentation
+- **README**: Updated with VWAP feature descriptions
+- **USAGE.md**: Comprehensive VWAP usage guide
+- **CLI Examples**: Command-line usage for VWAP indicator
+- **API Examples**: Programmatic VWAP integration
+
+### 🎨 Visual Enhancements
+- **VWAP Labels**: Clear "VWAP" labels
+- **Line Styling**: Dashed VWAP lines with consistent colors
+- **Volume Removal**: Cleaner charts without noisy volume bars
+- **Professional Quality**: Institutional-grade indicator visualization
+
+---
+
 ## [1.1.0] - 2025-08-04
 
 ### 🚀 Added

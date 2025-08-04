@@ -44,6 +44,10 @@ export interface ComparisonConfig {
   chartType?: string
   /** Whether to display VWAP indicator */
   showVWAP?: boolean
+  /** Whether to display EMA indicator */
+  showEMA?: boolean
+  /** EMA period for calculation */
+  emaPeriod?: number
   /** Output file path for saving the comparison */
   outputPath?: string
   /** Custom colors for chart bars and elements */
@@ -313,7 +317,9 @@ export class ComparisonService {
         showTitle: true,
         showTimeAxis: true,
         showGrid: true,
-        showVWAP: this.config.showVWAP === true
+        showVWAP: this.config.showVWAP === true,
+        showEMA: this.config.showEMA === true,
+        ...(this.config.emaPeriod !== undefined && { emaPeriod: this.config.emaPeriod })
       }
     }
   }

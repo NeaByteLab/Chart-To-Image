@@ -140,7 +140,9 @@ export class ChartRenderer {
       showTitle: this.config.showTitle !== false,
       showTimeAxis: this.config.showTimeAxis !== false,
       showGrid: this.config.showGrid !== false,
-      showVWAP: this.config.showVWAP === true
+      showVWAP: this.config.showVWAP === true,
+      showEMA: this.config.showEMA === true,
+      ...(this.config.emaPeriod !== undefined && { emaPeriod: this.config.emaPeriod })
     }
     if (this.config.watermark !== undefined) {
       options.watermark = this.config.watermark

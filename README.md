@@ -83,6 +83,11 @@ npx @neabyte/chart-to-image -s ETH/USDT -o heikin-ashi.png --chart-type heikin-a
 npx @neabyte/chart-to-image -s BTC/USDT -o renko.png --chart-type renko
 npx @neabyte/chart-to-image -s BTC/USDT -o line-break.png --chart-type line-break
 
+# Technical indicators
+npx @neabyte/chart-to-image -s BTC/USDT -o vwap-chart.png --vwap
+npx @neabyte/chart-to-image -s ETH/USDT -o ema-chart.png --ema
+npx @neabyte/chart-to-image -s BTC/USDT -o indicators.png --vwap --ema
+
 # Chart comparison (side-by-side)
 npx @neabyte/chart-to-image --compare "BTC/USDT,ETH/USDT" --output comparison.png
 
@@ -91,6 +96,9 @@ npx @neabyte/chart-to-image --compare "BTC/USDT,BTC/USDT" --timeframes "1h,4h" -
 
 # Grid comparison with custom colors
 npx @neabyte/chart-to-image --compare "BTC/USDT,ETH/USDT" --layout grid --custom-colors "bullish=#00ff88,bearish=#ff4444" --output grid-comparison.png
+
+# Comparison with indicators
+npx @neabyte/chart-to-image --compare "BTC/USDT,ETH/USDT" --vwap --ema --output comparison-indicators.png
 
 # Hide elements for clean charts
 npx @neabyte/chart-to-image -s ADA/USDT -o clean.png --hide-title --hide-time-axis --hide-grid
@@ -161,6 +169,27 @@ const gridResult = await ComparisonService.grid(
     }
   }
 )
+
+// Chart with technical indicators
+const indicatorResult = await generateChartImage({
+  symbol: 'BTC/USDT',
+  timeframe: '1h',
+  outputPath: 'indicators.png',
+  showVWAP: true,
+  showEMA: true,
+  emaPeriod: 20
+})
+
+// Comparison with indicators
+const comparisonWithIndicators = await ComparisonService.sideBySide(
+  ['BTC/USDT', 'ETH/USDT'],
+  'comparison-indicators.png',
+  {
+    showVWAP: true,
+    showEMA: true,
+    emaPeriod: 20
+  }
+)
 ```
 
 ## ⚡ Advanced Features
@@ -173,6 +202,12 @@ const gridResult = await ComparisonService.grid(
 - **Heikin-Ashi**: Trend-smoothed candles
 - **Renko**: Price-based block chart
 - **Line Break**: Break high/low trend patterns
+
+### 📈 Technical Indicators
+
+- **VWAP**: Volume Weighted Average Price (institutional standard)
+- **EMA**: Exponential Moving Average (configurable periods)
+- **Combined Analysis**: Use both indicators together for comprehensive analysis
 
 ### 🎨 Custom Colors
 

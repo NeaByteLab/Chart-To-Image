@@ -66,6 +66,10 @@ export interface ChartConfig {
   showGrid?: boolean
   /** Whether to display VWAP indicator */
   showVWAP?: boolean
+  /** Whether to display EMA indicator */
+  showEMA?: boolean
+  /** EMA period for calculation */
+  emaPeriod?: number
   /** Background color of the chart */
   backgroundColor?: string
   /** Text color for chart labels */
@@ -166,6 +170,10 @@ export interface ChartOptions {
   showGrid?: boolean
   /** Whether to display VWAP indicator */
   showVWAP?: boolean
+  /** Whether to display EMA indicator */
+  showEMA?: boolean
+  /** EMA period for calculation */
+  emaPeriod?: number
   /** Chart scaling configuration */
   scale?: {
     /** X-axis scale factor */

@@ -34,6 +34,8 @@ export interface CLIArgs {
   hideTimeAxis?: boolean
   hideGrid?: boolean
   showVWAP?: boolean
+  showEMA?: boolean
+  emaPeriod?: number
   autoScale?: boolean
   scaleX?: number
   scaleY?: number
@@ -253,6 +255,10 @@ export function parseArgs(): CLIArgs {
       case '--vwap':
         parsed.showVWAP = true
         break
+      case '--ema':
+        parsed.showEMA = true
+        parsed.emaPeriod = 20 // Default period
+        break
       case '--background-color':
       case '--bg-color':
         if (nextArg && !nextArg.startsWith('-')) {
@@ -407,6 +413,7 @@ Optional Options:
   --hide-time-axis                Hide time axis
   --hide-grid                     Hide grid
   --vwap                          Show VWAP indicator
+  --ema                           Show EMA indicator (default: 20 period)
   --background-color <color>      Background color
   --text-color <color>            Text color
   --fetch                         Fetch fresh data
@@ -583,6 +590,8 @@ function addHideOptions(config: Record<string, unknown>, args: CLIArgs): void {
   if (args.hideTimeAxis) config.showTimeAxis = false
   if (args.hideGrid) config.showGrid = false
   if (args.showVWAP) config.showVWAP = true
+  if (args.showEMA) config.showEMA = true
+  if (args.emaPeriod) config.emaPeriod = args.emaPeriod
 }
 
 /**

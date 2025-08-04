@@ -377,6 +377,133 @@ export class VWAPRenderer {
 }
 
 /**
+ * EMA data structure for exponential moving average
+ */
+interface EMAData {
+  time: number
+  value: number
+}
+
+/**
+ * EMA indicator renderer
+ *
+ * Renders Exponential Moving Average (EMA) as an overlay line
+ * on the main chart. EMA gives more weight to recent prices
+ * and is widely used by traders for trend analysis.
+ */
+export class EMARenderer {
+  private ctx: CanvasRenderingContext2D
+  private dimensions: ChartDimensions
+  private priceRange: PriceRange
+  private config: ChartOptions
+  private period: number
+
+  /**
+   * Creates a new EMA renderer instance
+   *
+   * Initializes the renderer with canvas context, chart dimensions,
+   * price range for scaling, configuration options, and EMA period
+   * for accurate exponential moving average calculation.
+   *
+   * @param ctx - Canvas rendering context for drawing operations
+   * @param dimensions - Chart dimensions and margin configuration
+   * @param priceRange - Price range for coordinate scaling
+   * @param config - Chart styling and configuration options
+   * @param period - EMA period (e.g., 20, 50, 200)
+   */
+  constructor(
+    ctx: CanvasRenderingContext2D,
+    dimensions: ChartDimensions,
+    priceRange: PriceRange,
+    config: ChartOptions,
+    period: number
+  ) {
+    this.ctx = ctx
+    this.dimensions = dimensions
+    this.priceRange = priceRange
+    this.config = config
+    this.period = period
+  }
+
+  /**
+   * Calculates EMA values from OHLC data
+   *
+   * Computes Exponential Moving Average using the standard
+   * calculation method. EMA gives more weight to recent prices
+   * using a multiplier based on the period.
+   *
+   * @param ohlc - Array of OHLC candle data
+   * @returns Array of EMA data points
+   */
+  private calculateEMA(ohlc: ChartOHLC[]): EMAData[] {
+    if (ohlc.length === 0) return []
+
+    const emaData: EMAData[] = []
+    const multiplier = 2 / (this.period + 1)
+    let ema = ohlc[0].close // Start with first close price
+
+    ohlc.forEach((candle, index) => {
+      if (index === 0) {
+        // First value is the close price
+        ema = candle.close
+      } else {
+        // EMA = (Close - Previous EMA) × Multiplier + Previous EMA
+        ema = (candle.close - ema) * multiplier + ema
+      }
+
+      emaData.push({
+        time: candle.time,
+        value: ema
+      })
+    })
+
+    return emaData
+  }
+
+  /**
+   * Renders EMA indicator
+   *
+   * Draws EMA line as an overlay on the main chart with
+   * distinctive styling to distinguish it from price action.
+   * Uses color coding and line style for professional appearance.
+   *
+   * @param ohlc - Array of OHLC candle data
+   */
+  render(ohlc: ChartOHLC[]): void {
+    const emaData = this.calculateEMA(ohlc)
+    if (emaData.length === 0) return
+
+    const spacing = this.dimensions.chartWidth / ohlc.length
+
+    // Draw EMA line
+    this.ctx.strokeStyle = this.config.customBarColors?.bearish || '#ff6b6b'
+    this.ctx.lineWidth = 2
+    this.ctx.setLineDash([]) // Solid line for EMA
+    this.ctx.beginPath()
+
+    emaData.forEach((point, index) => {
+      const x = this.dimensions.margin.left + index * spacing + spacing / 2
+      const y = this.dimensions.margin.top + 
+        ((this.priceRange.maxPrice - point.value) / this.priceRange.priceRange) * this.dimensions.chartHeight
+
+      if (index === 0) {
+        this.ctx.moveTo(x, y)
+      } else {
+        this.ctx.lineTo(x, y)
+      }
+    })
+
+    this.ctx.stroke()
+
+    // Draw EMA label
+    this.ctx.fillStyle = this.config.customBarColors?.bearish || '#ff6b6b'
+    this.ctx.font = DEFAULT_FONT
+    this.ctx.textAlign = 'left'
+    this.ctx.fillText(`EMA(${this.period})`, this.dimensions.margin.left + 5, this.dimensions.margin.top + 20)
+  }
+}
+
+/**
  * Horizontal price levels renderer
  *
  * Renders horizontal lines representing support/resistance levels,
